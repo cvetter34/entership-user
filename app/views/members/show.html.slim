@@ -1,0 +1,72 @@
+.job-profile
+  .row
+    .col-xs-12
+      h1
+        = @member.full_name
+        - cls = @member.is_public ? "field-name-open" : "field-name-closed"
+
+  .row
+    .col-xs-8
+      - unless @member.hide_born_on
+        .row
+          .col-xs-4
+            p class="#{cls}" Date of birth
+          .col-xs-8
+            p.field-value = if @member.born_on then @member.born_on.to_formatted_s(:table_date)
+      .row
+        .col-xs-4
+          p class="#{cls}" Current occupation
+        .col-xs-8
+          p.field-value = @member.occupation.titleize
+      .row
+        .col-xs-4
+          p class="#{cls}" Interested sectors
+        .col-xs-8
+          p.field-value = @member.sectors.map {|s| Member.ok_sectors.to_a[s.to_i][0]}.join("<br>").html_safe
+      .row
+        .col-xs-4
+          p class="#{cls}" City
+        .col-xs-8
+          p.field-value = @member.city
+      .row
+        .col-xs-4
+          p class="#{cls}" Country
+        .col-xs-8
+          p.field-value = @member.country
+      .row
+        .col-xs-4
+          p class="#{cls}" Email
+        .col-xs-8
+          p.field-value = link_to @member.email, "mailto:#{@member.email}"
+      .row
+        .col-xs-4
+          p class="#{cls}" Website
+        .col-xs-8
+          p.field-value = ( link_to @member.website, "//#{@member.website_url}" unless @member.website_url.blank? )
+      .row
+        .col-xs-4
+          p class="#{cls}" Willing to relocate?
+        .col-xs-8
+          - will_relocate = ( @member.will_relocate ? "YES" : "no" )
+          p.field-value
+            span class="#{will_relocate.downcase}" = will_relocate
+      - unless @member.hide_status
+        .row
+          .col-xs-4
+            p class="#{cls}" Current status
+          .col-xs-8
+            p.field-value = Member.ok_statuses.to_a[@member.current_status][0] unless @member.current_status.blank?
+      .row
+        .col-xs-4
+          p class="#{cls}" Experience
+        .col-xs-8
+          p.field-value = Member.ok_experiences.to_a[@member.experience][0] unless @member.experience.blank?
+      - unless @member.notice.blank?
+        .row
+          .col-xs-10
+            p class="#{cls}" Notice
+          .col-xs-8
+            p.field-value = Member.ok_notices.to_a[@member.notice][0]
+
+    .col-xs-4
+      = image_tag @member.photo.url(:medium) unless @member.photo.url(:medium) == "/photos/medium/missing.png"

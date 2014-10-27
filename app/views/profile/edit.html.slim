@@ -1,0 +1,8 @@
+- breadcrumb :profile_edit, @current_member
+
+= form_for @current_member, url: profile_url, id: "profile-form" do |f|
+  fieldset
+    legend Edit profile for #{@current_member.name}
+    == render partial: "shared/member_form", locals: { f: f, member: @current_member, auto: true }
+    .form-group
+      = f.submit "Update profile", class: "btn btn-warning"

@@ -1,0 +1,61 @@
+.row
+  .col-xs-12
+    h1 Education
+.row
+  .col-xs-12
+    p
+      ' Welcome to Entership's Education Page where you can find out about
+      ' courses, seminars or internship programs in your area.
+.row
+  .col-xs-12
+    table.table.table-striped.table-bordered.education
+      caption Courses
+      - if @courses and not @courses.empty?
+        thead
+          tr
+            th Name
+            th Date
+            th Location
+            th Registration deadline
+        tbody
+          - @courses.each do |course|
+            tr
+              td
+                - if course["url"].blank?
+                  = course["topic"] || course["name"]
+                - else
+                  a href="#{course['url']}"
+                    = course["topic"] || course["name"]
+              td = course["date"].blank? ? "" : course["date"].to_formatted_s(:edu_date)
+              td = course["location"]
+              td = course["deadline"].blank? ? "" : course["deadline"].to_formatted_s(:edu_date)
+      - else
+        tr
+          td There are currently no courses listed.
+
+.row
+  .col-xs-12
+    table.table.table-striped.table-bordered.education
+      caption Seminars
+      - if @seminars and not @seminars.empty?
+        thead
+          tr
+            th Topic
+            th Date
+            th Location
+            th Registration deadline
+        tbody
+          - @seminars.each do |seminar|
+            tr
+              td
+                - if seminar["url"].blank?
+                  = seminar["topic"] || seminar["name"]
+                - else
+                  a href="#{seminar['url']}"
+                    = seminar["topic"] || seminar["name"]
+              td = seminar["date"].blank? ? "" : seminar["date"].to_formatted_s(:edu_date)
+              td = seminar["location"]
+              td = seminar["deadline"].blank? ? "" : seminar["deadline"].to_formatted_s(:edu_date)
+      - else
+        tr
+          td There are currently no seminars listed.

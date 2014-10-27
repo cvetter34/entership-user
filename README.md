@@ -1,4 +1,4 @@
-entership-user
-==============
+EntershipMembers
+========
 
-Final Entership user app.
+Entership member site.

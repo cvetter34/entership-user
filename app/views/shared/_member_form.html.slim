@@ -1,0 +1,208 @@
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :title
+      = f.select :title, options_for_select(Member.ok_titles.to_a, \
+        selected: (member.nil? ? nil : member.title)), \
+        {}, { class: "form-control has-help", autofocus: (auto), \
+        data: { "help-id" => "member-title-help" } }
+  .col-sm-6
+    p#member-title-help.help-text The mode of address you prefer.
+
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :name_given, "Given name"
+      = f.text_field :name_given, class: "form-control has-help", placeholder: "Enter your given name", \
+        data: { "help-id" => "member-name-given-help" }
+  .col-sm-6
+    p#member-name-given-help.help-text This is your given name, e.g., "John".
+
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :name_family, "Family name"
+      = f.text_field :name_family, class: "form-control has-help", placeholder: "Enter your family name", \
+        data: { "help-id" => "member-name-family-help" }
+  .col-sm-6
+    p#member-name-family-help.help-text This is your family name, e.g., "Smith".
+
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :born_on, "Date of birth"
+      #born-on-datepicker.input-group.date
+        = f.text_field :born_on, class: "form-control has-help", \
+          placeholder: "Enter your date of birth: YYYY-MM-DD", \
+          data: { "help-id" => "member-born-on-help" }
+        span.input-group-addon
+          span.fa.fa-calendar
+    .form-group
+      .checkbox
+        = f.label :hide_born_on do
+          = f.check_box :hide_born_on, class: "has-help", \
+            data: { "help-id" => "member-hide-born-on-help" }
+          ' Hide my date of birth
+  .col-sm-6
+    p#member-born-on-help.help-text This is the date on which you were born.
+    p#member-hide-born-on-help.help-text
+      ' Checking this box will prevent others from seeing your date of birth.
+
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :street_address
+      = f.text_area :street_address, class: "form-control has-help", placeholder: "Enter your street address", \
+        data: { "help-id" => "member-street-address-help" }
+  .col-sm-6
+    p#member-street-address-help.help-text This is your street address (number, street, etc.).
+
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :city
+      = f.text_field :city, class: "form-control has-help", placeholder: "Enter your city", \
+        data: { "help-id" => "member-city-help" }
+  .col-sm-6
+    p#member-city-help.help-text The city in which you are currently located.
+
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :postal_code, "Postal or zip code"
+      = f.text_field :postal_code, class: "form-control has-help", placeholder: "Enter your postal (zip) code", \
+        data: { "help-id" => "member-postal-code-help" }
+  .col-sm-6
+    p#member-postal-code-help.help-text The postal or zip code in which you are currently located.
+
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :country_code, "Country"
+      = f.country_select :country_code, { priority_countries: ["HK"], prompt: "Select your country" }, \
+        class: "form-control has-help", data: { "help-id" => "member-country-help" }
+  .col-sm-6
+    p#member-country-help.help-text This is the country in which your are located.
+
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :nationality_code, "Nationality"
+      = f.country_select :nationality_code, { priority_countries: ["HK"], prompt: "Select your nationality" }, \
+        class: "form-control has-help", data: { "help-id" => "member-nationality-help" }
+  .col-sm-6
+    p#member-nationality-help.help-text This is your nationality (who issued your passport).
+
+.row.required
+  .col-sm-6
+    label.checkboxes.has-help data-help-id="member-sectors-help"
+      ' Interested sectors (select one or more)
+      = check_boxes_for_member_sector("Member", "sectors")
+  .col-sm-6
+    p#member-sectors-help.help-text Your sectors are used to facilitate searching for jobs.
+
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :current_status
+      = f.select :current_status, options_for_select(Member.ok_statuses.to_a, \
+        selected: (member.nil? ? nil : member.current_status)), \
+        {}, { class: "form-control has-help", \
+        data: { "help-id" => "member-current-status-help" } }
+    .form-group
+      .checkbox
+        = f.label :hide_status do
+          = f.check_box :hide_status, class: "has-help", \
+            data: { "help-id" => "member-hide-status-help" }
+          ' Hide my current status
+  .col-sm-6
+    p#member-current-status-help.help-text Your current job status.
+    p#member-hide-status-help.help-text
+      ' Checking this box will prevent others from seeing your current status.
+
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :experience
+      = f.select :experience, options_for_select(Member.ok_experiences.to_a, \
+        selected: (member.nil? ? nil : member.experience)), \
+        {}, { class: "form-control has-help", \
+        data: { "help-id" => "member-experience-help" } }
+  .col-sm-6
+    p#member-experience-help.help-text Your level of experience.
+
+.row.required
+  .col-sm-6
+    .form-group
+      = f.label :phone, "Phone number"
+      = f.text_field :phone, class: "form-control has-help", placeholder: "Enter your phone number", \
+        data: { "help-id" => "member-phone-help" }
+  .col-sm-6
+    p#member-phone-help.help-text Your primary telephone number.
+
+.row.optional
+  .col-sm-6
+    .form-group
+      = f.label :mobile, "Mobile number"
+      = f.text_field :mobile, class: "form-control has-help", placeholder: "Enter a mobile number", \
+        data: { "help-id" => "member-mobile-help" }
+  .col-sm-6
+    p#member-mobile-help.help-text A secondary mobile phone number at which you can be reached.
+
+.row.optional
+  .col-sm-6
+    .form-group
+      = f.label :website_url, "Website"
+      = f.text_field :website_url, class: "form-control has-help", placeholder: "Enter a website URL", \
+        data: { "help-id" => "member-website-url-help" }
+  .col-sm-6
+    p#member-website-url-help.help-text This is the URL (web address) of your personal website, if any.
+
+.row.optional
+  .col-sm-6
+    .form-group
+      = f.label :occupation, "Current occupation"
+      = f.text_field :occupation, class: "form-control has-help", placeholder: "Enter your occupation.", \
+        data: { "help-id" => "member-occupation-help" }
+  .col-sm-6
+    p#member-occupation-help.help-text This is the occupation for which you might seek a job.
+
+.row.optional
+  .col-sm-6
+    .form-group
+      = f.label :notice
+      = f.select :notice, options_for_select(Member.ok_notices.to_a, \
+        selected: (member.nil? ? nil : member.notice), allow_nil: true), \
+        { include_blank: true }, { class: "form-control has-help", \
+        data: { "help-id" => "member-notice-help" } }
+  .col-sm-6
+    p#member-notice-help.help-text The notice that you will require before starting work.
+
+.row.optional
+  .col-sm-6
+    .form-group
+      .checkbox
+        = f.label :will_relocate do
+          = f.check_box :will_relocate, class: "has-help", \
+            data: { "help-id" => "member-will-relocate-help" }
+          ' I am willing to consider relocation for a job
+    .form-group
+      .checkbox
+        = f.label :is_public do
+          = f.check_box :is_public, class: "has-help", \
+            data: { "help-id" => "member-is-public-help" }
+          ' My profile can be seen by everyone
+  .col-sm-6
+    p#member-will-relocate-help.help-text.checkbox-help
+      ' If you are willing to relocate, that will greatly widen your job opportunities.
+    p#member-is-public-help.help-text.checkbox-help
+      ' Unchecking this box will keep your profile private.
+
+.row.optional
+  .col-sm-6
+    .form-group
+      = f.label :photo, "Profile photo"
+      = f.file_field :photo, class: "form-control has-help", placeholder: "Attach your profile photo", \
+        data: { "help-id" => "member-photo-help" }
+  .col-sm-6
+    p#member-photo-help.help-text Upload your profile photo here.

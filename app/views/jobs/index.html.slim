@@ -1,0 +1,44 @@
+- if @company then breadcrumb( :company_jobs, @company ) else breadcrumb( :jobs )
+.row
+  .col-md-12
+    table.table.jobs
+      caption
+        ' Jobs listings
+        - if @company
+          ' for #{@company.name}
+      thead
+        tr
+          th Job title
+          - unless @company
+            th.hidden-xs Company
+
+          th.hidden-sm.hidden-xs Posted
+          th.hidden-sm.hidden-xs Deadline
+          th title="Your job applications"
+            span.visible-xs Apps
+            span.hidden-xs Applications
+      tbody
+        - @jobs.each do |job|
+          tr
+            td
+              - if @company
+                = link_to job.title, company_job_url(@company, job)
+              - else
+                = link_to job.title, job_url(job)
+            - unless @company
+              td.hidden-xs
+                = link_to job.company.name, company_url(job.company)
+            td.hidden-sm.hidden-xs title="#{job.posted_on.to_formatted_s(:table_date)}"
+              = local_time_ago job.posted_on
+            td.hidden-sm.hidden-xs
+              = local_time_ago(job.deadline_on, 'time-or-date') if job.deadline_on
+            td
+              - if job.mine
+                - app = job.apps.find_by( member_id: @current_member.id )
+                - status = App.ok_statuses.to_a[app.status][0]
+                => link_to content_tag(:span, "", class: "fa fa-file fa-lg"), \
+                  job_app_url(app.job, app), class: "#{status}-app", title: "View your application"
+                => link_to "#{status.titleize}", job_app_url(app.job, app), \
+                  class: "#{status}-app", title: "View your application"
+              - else
+                = link_to "Apply", new_job_app_url(job), class: "btn btn-success btn-xs"

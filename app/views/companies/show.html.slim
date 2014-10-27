@@ -1,0 +1,95 @@
+- breadcrumb :company, @company
+
+.row
+  .col-xs-12
+    .pull-right.edit-link
+      = @company.apps.length.to_s + " " + "app".pluralize(@company.apps.length)
+
+.job-profile
+  .row
+    .col-xs-6
+      h1
+        - if @company.logo.blank?
+          = @company.name
+        - else
+          = image_tag @company.logo.url(:medium)
+      table.table.jobs style="margin-top: 30px"
+        thead
+          tr
+            th Job title
+            th.date Opens on
+            th.date Closes on
+            th.numerical Apps
+        tbody
+          - if @company.jobs.empty?
+            tr
+              td colspan="3" No current jobs
+          - else
+            - @company.jobs.each do |job|
+              tr
+                td = link_to job.title, job_url(job)
+                td.date = job.posted_on ? job.posted_on.to_formatted_s(:closing_date) : ""
+                td.date = job.deadline_on ? job.deadline_on.to_formatted_s(:closing_date) : ""
+                td.numerical = link_to job.apps.length, job_apps_url(job)
+
+    .col-xs-6 style="margin-top: 50px"
+      .row
+        .col-xs-12
+          = @company.description_as_html
+      .row style="margin-top: 30px"
+        .col-xs-4
+          p.field-name-open Sectors
+        .col-xs-8
+          p = @company.sectors.map {|s| Company.ok_sectors.to_a[s.to_i][0]}.join("<br>").html_safe
+      .row
+        .col-xs-4
+          p.field-name-open Country
+        .col-xs-8
+          p = @company.country
+      .row
+        .col-xs-4
+          p.field-name-open Type
+        .col-xs-8
+          p = Company.ok_company_types.to_a[@company.company_type][0] unless @company.company_type.blank?
+      .row
+        .col-xs-4
+          p.field-name-open Size
+        .col-xs-8
+          p = Company.ok_company_sizes.to_a[@company.company_size][0] unless @company.company_size.blank?
+      .row
+        .col-xs-4
+          p.field-name-open Contact person
+        .col-xs-8
+          p = @company.contact_person
+      .row
+        .col-xs-4
+          p.field-name-open Year founded
+        .col-xs-8
+          p = @company.year_founded
+      .row
+        .col-xs-4
+          p.field-name-open Address
+        .col-xs-8
+          p = @company.address.gsub(/\n/, "<br>").html_safe
+      .row
+        .col-xs-4
+          p.field-name-open Phone numbers
+        .col-xs-8
+          p
+            ' #{@company.phone} (main)
+            - unless @company.mobile.blank?
+              br
+              ' #{@company.mobile} (mobile)
+            - unless @company.fax.blank?
+              br
+              ' #{@company.fax} (fax)
+      .row
+        .col-xs-4
+          p.field-name-open Website
+        .col-xs-8
+          p = link_to @company.website, "//#{@company.website_url}"
+      .row
+        .col-xs-4
+          p.field-name-open Email
+        .col-xs-8
+          p = link_to @company.email, "mailto:#{@company.email}"

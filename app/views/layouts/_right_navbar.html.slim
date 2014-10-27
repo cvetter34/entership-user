@@ -1,0 +1,8 @@
+ul.nav.navbar-nav.navbar-right
+  / = render partial: "layouts/unreads"
+  li.current-member title="Your profile"
+    - profile_text = "<span class=\"fa fa-user profile-icon\"> #{@current_member.name_given}</span>"
+    = link_to_unless_current profile_text.html_safe, profile_url do
+      span.this-page= profile_text.html_safe
+  li
+    = link_to "Sign out", log_out_url, method: :delete

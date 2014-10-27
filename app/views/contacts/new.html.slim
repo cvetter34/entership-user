@@ -1,0 +1,39 @@
+.row
+  .col-md-12
+    h1 Contact
+.row
+  .col-md-6
+    p
+      ' At Entership, we value your concerns and strive to always deliver the
+      ' best quality service to our members.
+    p
+      ' If you are having difficulty using the platform or notice any glitches
+      ' or faults please let us know. If there is anything on Entership that you
+      ' find to be dysfunctional, annoying, unprofessional, irrelevant, or
+      ' illegal, please report it to us by completing and sending the feedback
+      ' form on this page.
+    p
+      ' In case you have any other concerns or queries, we are always happy to
+      ' answer your questions.
+    p
+      ' We strive to maintain a transparent, reliable and high quality service
+      ' that you can always depend on. 
+  .col-md-6
+    - if @current_member
+      = form_for @contact, url: contact_url do |f|
+        fieldset
+          legend
+            ' Send a message to EnterShip
+          p.from-line From #{@current_member.name}
+          .form-group
+            = f.label :subject, class: "sr-only"
+            = f.text_field :subject, class: "form-control", placeholder: "Subject"
+          .muted.pull-right
+            ' You can use
+            a href="http://daringfireball.net/projects/markdown/syntax" Markdown Syntax
+          .form-group
+            = f.label :body, class: "sr-only"
+            = f.text_area :body, class: "form-control larger-area", placeholder: "Message"
+          = f.submit "send your message", class: "btn btn-warning"
+    - else
+      p Public contact information goes here.

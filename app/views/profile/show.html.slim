@@ -1,0 +1,117 @@
+.job-profile
+  .row
+    .col-xs-12
+      h1
+        .pull-right.view-link
+          => link_to "Edit", edit_profile_url(@current_member), \
+            title: "Edit #{@current_member.name}", class: "btn btn-success"
+
+          button.btn.btn-danger data-url="#{profile_url}" data-name="#{@current_member.name}" data-redirect="#{root_url}"
+            ' Delete your account
+        = @current_member.full_name
+        - cls = @current_member.is_public ? "field-name-open" : "field-name-closed"
+  .row
+    .col-xs-8
+      .row
+        .col-xs-5
+          p class="#{cls}"
+            ' Date of birth
+            = @current_member.hide_born_on ? " (hidden)" : " (visible)"
+
+        .col-xs-7
+          p.field-value
+            = if @current_member.born_on then @current_member.born_on.to_formatted_s(:table_date)
+
+      .row
+        .col-xs-5
+          p class="#{cls}" Current occupation
+        .col-xs-7
+          p.field-value = @current_member.occupation.titleize
+      .row
+        .col-xs-5
+          p class="#{cls}" Interested sectors
+        .col-xs-7
+          p.field-value = @current_member.sectors.map {|s| Member.ok_sectors.to_a[s.to_i][0]}.join("<br>").html_safe
+      .row
+        .col-xs-5
+          p class="#{cls}" Street address (private)
+        .col-xs-7
+          p.field-value = @current_member.street_address_as_html
+      .row
+        .col-xs-5
+          p class="#{cls}" City
+        .col-xs-7
+          p.field-value = @current_member.city
+      .row
+        .col-xs-5
+          p class="#{cls}" Postal (zip) code (private)
+        .col-xs-7
+          p.field-value = @current_member.postal_code
+      .row
+        .col-xs-5
+          p class="#{cls}" Country
+        .col-xs-7
+          p.field-value = @current_member.country
+      .row
+        .col-xs-5
+          p class="#{cls}" Nationality (private)
+        .col-xs-7
+          p.field-value = @current_member.nationality
+      .row
+        .col-xs-5
+          p class="#{cls}" Email
+        .col-xs-7
+          p.field-value = link_to @current_member.email, "mailto:#{@current_member.email}"
+      .row
+        .col-xs-5
+          p class="#{cls}" Phone
+        .col-xs-7
+          p.field-value = @current_member.phone
+      .row
+        .col-xs-5
+          p class="#{cls}" Website
+        .col-xs-7
+          p.field-value = ( link_to @current_member.website, "//#{@current_member.website_url}" unless @current_member.website_url.blank? )
+      .row
+        .col-xs-5
+          p class="#{cls}" Mobile phone
+        .col-xs-7
+          p.field-value = @current_member.mobile
+      .row
+        .col-xs-5
+          p class="#{cls}" Willing to relocate?
+        .col-xs-7
+          - will_relocate = ( @current_member.will_relocate ? "YES" : "no" )
+          p.field-value
+            span class="#{will_relocate.downcase}" = will_relocate
+      .row
+        .col-xs-5
+          p class="#{cls}" Profile visibility
+        .col-xs-7
+          - is_public = ( @current_member.is_public ? "PUBLIC" : "private" )
+          p.field-value
+            span class="#{@current_member.is_public ? 'yes' : 'no'}" #{is_public}
+      .row
+        .col-xs-5
+          p class="#{cls}"
+            ' Current status
+            = @current_member.hide_status ? " (hidden)" : " (visible)"
+        .col-xs-7
+          p.field-value
+            = Member.ok_statuses.to_a[@current_member.current_status][0] unless @current_member.current_status.blank?
+      .row
+        .col-xs-5
+          p class="#{cls}" Experience
+        .col-xs-7
+          p.field-value = Member.ok_experiences.to_a[@current_member.experience][0] unless @current_member.experience.blank?
+      - unless @current_member.notice.blank?
+        .row
+          .col-xs-5
+            p class="#{cls}" Notice
+          .col-xs-7
+            p.field-value = Member.ok_notices.to_a[@current_member.notice][0] unless @current_member.notice.blank?
+
+    .col-xs-4
+      - unless @current_member.photo.url(:medium) == "/photos/medium/missing.png"
+        p.pull-right
+          = image_tag @current_member.photo.url(:medium), class: "profile-photo"

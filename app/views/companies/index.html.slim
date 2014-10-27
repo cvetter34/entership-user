@@ -1,0 +1,26 @@
+- breadcrumb :companies
+.row
+  .col-md-12
+    table.table
+      caption Companies
+      thead
+        tr
+          th Company name
+          th Sectors
+          th Country
+          th Contact
+          th.numerical Jobs
+          th.numerical title="Pending job application count" Apps
+      tbody
+        - @companies.each do |company|
+          tr
+            td = link_to company.name, company_url(company)
+            td = company.sectors.map {|s| Company.ok_sectors.to_a[s.to_i][0]}.join("<br>").html_safe
+            td = company.country
+            td = link_to company.email, "mailto:#{company.email}" unless company.email.blank?
+            td.numerical
+              - num_jobs = company.jobs.length
+              = ( num_jobs > 0 ? num_jobs : "" )
+            td.numerical
+              - num_apps = company.apps.select {|a| a.status == "pending" }.length
+              = ( num_apps > 0 ? num_apps : "" )

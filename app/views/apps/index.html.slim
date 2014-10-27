@@ -1,0 +1,30 @@
+- breadcrumb :apps
+
+table.table.apps
+  caption
+    ' Applications
+  thead
+    tr
+      th.icon &nbsp;
+      th Job
+      th Company
+      th Status
+      th.tools &nbsp;
+  tbody
+    - @apps.each do |app|
+      - status = App.ok_statuses.to_a[app.status][0]
+      tr class="#{status}-row"
+        td
+          - if app.status == "pending"
+            - edit_txt = '<span class="fa fa-pencil fa-lg job-edit-icon"></span>'.html_safe
+            =<> link_to edit_txt, edit_job_app_url(app.job, app), class: "edit-link", \
+              title: "Edit my application"
+
+        td = link_to app.job.title, job_url(app.job), title: "View #{app.job.title}"
+        td = link_to app.job.company.name, company_url(app.job.company), \
+          title: "View #{app.job.company.name}"
+        td = App.ok_statuses.to_a[app.status][0].titleize
+        td.tools
+            - delete_txt = '<span class="fa fa-times fa-lg job-close-icon"></span>'.html_safe
+            =<> link_to delete_txt, job_app_url(app.job, app), class: "remove-link", method: :delete, \
+              title: "Delete my application"

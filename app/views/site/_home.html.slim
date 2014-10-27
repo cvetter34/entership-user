@@ -1,0 +1,11 @@
+.row
+  .col-md-12
+    h1 Welcome to Entership
+
+.row
+  .col-sm-8.col-xs-12
+    = render partial: "site/col_left"
+
+  .col-sm-4.col-xs-12
+    - unless @current_member
+      = render partial: "site/login_form"

@@ -1,0 +1,190 @@
+= form_for [@job, @app], role: "form" do |f|
+  fieldset
+    legend
+      - if @app.persisted?
+        .pull-right.view-link
+          - app_txt = '<i class="fa fa-eye app-view-icon"></i>'.html_safe
+          =<> link_to app_txt, job_app_url(@job, @app), title: "View application for |#{@job.title}|"
+          ' &nbsp;
+          - list_txt = '<i class="fa fa-list app-list-icon"></i>'.html_safe
+          =<> link_to list_txt, apps_url, title: "View all applications"
+        ' Edit application for
+        span.job-title> = @job.title
+      - else
+        .pull-right.view-link
+          - list_txt = '<i class="fa fa-list company-list-icon"></i>'.html_safe
+          =<> link_to list_txt, apps_url, title: "View all applications"
+        ' Apply for
+        = link_to "#{@job.title} at #{@job.company.name}", job_url(@job)
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :name_given
+          = f.text_field :name_given, class: "form-control has-help", placeholder: "Enter your given name", \
+            data: { "help-id" => "app-name-given-help" }
+      .col-sm-6
+        p#app-name-given-help.help-text This is your given name, e.g., "Derek".
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :name_family
+          = f.text_field :name_family, class: "form-control has-help", placeholder: "Enter your family name", \
+            data: { "help-id" => "app-name-family-help" }
+      .col-sm-6
+        p#app-name-family-help.help-text This is your family name, e.g. "Chiu".
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :age
+          = f.text_field :age, class: "form-control has-help", placeholder: "Enter your age", \
+            data: { "help-id" => "app-age-help" }
+      .col-sm-6
+        p#app-age-help.help-text This is your age at the time you're applying.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :nationality_code, "Nationality"
+          = f.country_select :nationality_code, { priority_countries: ["HK"], prompt: "Select your nationality" }, \
+            class: "form-control has-help", data: { "help-id" => "app-nationality-help" }
+      .col-sm-6
+        p#app-nationality-help.help-text This is your nationality (whose passport you carry).
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :country_code, "Country"
+          = f.country_select :country_code, { priority_countries: ["HK"], prompt: "Select your country" }, \
+            class: "form-control has-help", data: { "help-id" => "app-country-help" }
+      .col-sm-6
+        p#app-country-help.help-text This is the country in which you are located.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :phone
+          = f.text_field :phone, class: "form-control has-help", placeholder: "Enter your phone number", \
+            data: { "help-id" => "app-phone-help" }
+      .col-sm-6
+        p#app-phone-help.help-text This is the phone number at which you can be reached.
+
+    .row.required
+      .col-sm-6
+        .form-group
+          = f.label :email
+          = f.text_field :email, class: "form-control has-help", placeholder: "Enter your email address", \
+            data: { "help-id" => "app-email-help" }
+      .col-sm-6
+        p#app-email-help.help-text This is the email address at which you can be reached.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :personal_statement
+          = f.text_area :personal_statement, class: "form-control has-help",\
+            placeholder: "Enter a personal statement (cover letter)", \
+            autofocus: true, data: { "help-id" => "app-personal-statement-help"}
+      .col-sm-6
+        p#app-personal-statement-help.help-text
+          ' This is the equivalent of a cover letter.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          .checkbox
+            = f.label :has_right_to_work do
+              = f.check_box :has_right_to_work, class: "has-help", \
+                data: { "help-id" => "app-has-right-to-work-help"}
+              ' I have the right to work in #{@job.country}
+
+        .form-group
+          .checkbox
+            = f.label :has_work_permit do
+              = f.check_box :has_work_permit,  class: "has-help", \
+                data: { "help-id" => "app-has-work-permit-help"}
+              ' My right to work in #{@job.country} is by work permit or visa
+              ' (details below)
+      .col-sm-6
+        p#app-has-right-to-work-help.help-text.checkbox-help
+          ' Check this box <em>only</em> if you have the right to work in
+          ' #{@job.country} by citizenship, permanent residence, or some other form
+          ' of work permit or visa <em>that you already have</em>.
+
+        p#app-has-work-permit-help.help-text.checkbox-help
+          ' Check this box <em>only</em> if you <em>already have</em> a valid
+          ' work permit or visa for #{@job.country}.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :work_permit_detail
+          = f.text_area :work_permit_detail, class: "form-control has-help",\
+            placeholder: "Enter details for your work permit or visa", \
+            data: { "help-id" => "app-work-permit-detail-help"}
+      .col-sm-6
+        p#app-work-permit-detail-help.help-text
+          ' If you need a visa or work permit, then enter all the details here
+          ' (visa number, date expires, etc.).
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :comments
+          = f.text_area :comments, class: "form-control has-help",\
+            placeholder: "Enter your comments", \
+            data: { "help-id" => "app-comments-help"}
+      .col-sm-6
+        p#app-comments-help.help-text
+          ' Enter anything you want to tell this company about your application.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :cv, "Curriculum vitae"
+          = f.file_field :cv, class: "form-control has-help", placeholder: "Attach your curriculum vitae", \
+            data: { "help-id" => "app-cv-help" }
+      .col-sm-6
+        p#app-cv-help.help-text Upload your curriculum vitae (r&eacute;sum&eacute;) here.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :doc_one, "Attach first document"
+          = f.file_field :doc_one, class: "form-control has-help", placeholder: "Attach first document", \
+            data: { "help-id" => "app-doc-one-help" }
+      .col-sm-6
+        p#app-doc-one-help.help-text Upload a first additional document here.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :doc_two, "Attach second document"
+          = f.file_field :doc_two, class: "form-control has-help", placeholder: "Attach second document", \
+            data: { "help-id" => "app-doc-two-help" }
+      .col-sm-6
+        p#app-doc-two-help.help-text Upload a second additional document here.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :doc_three, "Attach third document"
+          = f.file_field :doc_three, class: "form-control has-help", placeholder: "Attach third document", \
+            data: { "help-id" => "app-doc-three-help" }
+      .col-sm-6
+        p#app-doc-three-help.help-text Upload a third additional document here.
+
+    .row.optional
+      .col-sm-6
+        .form-group
+          = f.label :doc_four, "Attach fourth document"
+          = f.file_field :doc_four, class: "form-control has-help", placeholder: "Attach fourth document", \
+            data: { "help-id" => "app-doc-four-help" }
+      .col-sm-6
+        p#app-doc-four-help.help-text Upload a fourth additional document here.
+
+    .row
+      .col-sm-12
+        = f.submit class: "btn btn-warning"

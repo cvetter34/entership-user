@@ -1,0 +1,21 @@
+.col-md-8
+  table.table
+    caption
+      = link_to "My job applications", apps_url
+    thead
+      tr
+        th.status Status
+        th Position
+        th Company
+        th Posted
+    tbody
+      - @apps.each do |app|
+        - status = App.ok_statuses.to_a[app.status][0]
+        tr class="#{status}-row"
+          td.status title="#{status.titleize} application"
+            - stat = case status when :declined then "thumbs-o-down" when :pending then "question" else "check" end
+            span class="fa fa-#{stat} fa-lg"
+          td = link_to app.job.title, job_url(app.job)
+          td = link_to app.job.company.name, company_url(app.job.company)
+          td title="#{app.created_at.to_formatted_s(:table_date)}"
+            = local_time_ago app.created_at

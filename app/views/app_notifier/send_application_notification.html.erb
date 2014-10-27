@@ -1,0 +1,18 @@
+<p>
+  You've received a new application for the job listing for
+  <%= @app.job.title %> from <%= @app.member.name %>.
+</p>
+
+<p>
+  The link below is one-use only. When you follow it, you will
+  be sent to the detail page for the above application. If you
+  wish to revisit this application later, you should bookmark it.
+</p>
+
+<p>This link will only work once.</p>
+
+<p>
+  <a href="<%= @url %>"><%= @url %></a>
+</p>
+
+<p>The Entership Team</p>

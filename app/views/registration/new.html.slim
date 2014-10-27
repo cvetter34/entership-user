@@ -1,0 +1,29 @@
+= form_for @member, url: register_url( params[:code] ), html: { class: "registration-form" } do |f|
+  fieldset
+    legend Complete registration for #{@member.email}
+    .row.reset-form
+      .col-sm-6.col-xs-12.required
+        .form-group
+          = f.label :password, "Choose a password"
+          = f.password_field :password, class: "form-control showable-password", placeholder: "Choose a password", required: true, autofocus: true
+        .form-group
+          = f.label :password_confirmation, "Type it again"
+          = f.password_field :password_confirmation, class: "form-control showable-password", placeholder: "Type your password again", required: true
+
+      .col-sm-6.col-xs-12
+        p#pw-quality.pw-quality Password too weak!
+        #pw-meter.strength-meter.progress.progress-striped
+          #strength-meter.meter.progress-bar role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"
+            #pct-strength.sr-only 0% strength
+        .crack-div
+          strong> Time to crack:
+          span#time-to-crack instant
+        #match-div.match-div
+        .muted All fields are required
+
+    == render partial: "shared/member_form", locals: { f: f, member: @member, auto: false }
+    .form-group
+      => f.submit "Register", class: "btn btn-success metered", disabled: true
+      button#show-password-button.btn.btn-warning data-state="show" Show Passwords
+
+script src="/js/zxcvbn-async.js"

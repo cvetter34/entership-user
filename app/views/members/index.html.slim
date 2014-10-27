@@ -1,0 +1,19 @@
+.row
+  .col-md-12
+    table.table
+      caption Members
+      thead
+        tr
+          th Member name
+          th Country
+          th Current occupation
+          th Interested sectors
+          th Member since
+      tbody
+        - @members.each do |member|
+          tr
+            td = link_to member.name, member_url(member)
+            td = member.country
+            td = member.occupation
+            td = member.sectors.map {|s| Member.ok_sectors.to_a[s.to_i][0]}.join("<br>").html_safe
+            td = member.created_at.to_formatted_s(:table_date)
